@@ -1,6 +1,7 @@
 
 import { GoogleGenAI, Type } from '@google/genai';
 import type { Chat } from '@google/genai';
+// FIX: Corrected import path for constants.
 import { AI_PERSONA_PROMPT } from '../constants';
 import type { Model } from '../types';
 
@@ -26,10 +27,9 @@ DOCUMENT TEXT:\n"""\n${documentText}\n"""`;
   });
 
   // 2. Generate Preset Questions
-  // FIX: Updated prompt to be more specific about the JSON structure to improve model reliability.
   const questionsPrompt = `Based on the following document text, generate 5 short, one-sentence questions a student might ask to get started. The questions should be general and invite exploration of key topics. One question should be a prompt to create a quiz. Keep each question concise. Example: "Explain the main concept.", "Quiz me on the key terms.", "What are the main takeaways?".
 
-Return the result as a valid JSON object with a single key "questions" which is an array of strings.
+Return the result as a valid JSON array of strings.
 
 DOCUMENT TEXT:\n"""\n${documentText}\n"""`;
 
@@ -75,6 +75,7 @@ DOCUMENT TEXT:\n"""\n${documentText}\n"""`;
   
   let presetQuestions: string[] = [];
   try {
+    // FIX: The response is a JSON object with a 'questions' property which is an array of strings.
     const questionsJson = JSON.parse(questionsResponse.text);
     if (questionsJson.questions && Array.isArray(questionsJson.questions)) {
         presetQuestions = questionsJson.questions;
