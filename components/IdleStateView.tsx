@@ -57,7 +57,7 @@ export const IdleStateView: React.FC<IdleStateViewProps> = ({ onFileSelected }) 
                 className="w-32 h-32 rounded-full object-cover mb-6 shadow-lg border-4 border-white"
             />
             <div className="text-center mb-8">
-                <h1 className="text-5xl font-bold text-slate-800">Kangmul+Joan's AI Study Pal</h1>
+                <h1 className="text-4xl font-bold text-slate-800">Kangmul+Joan's AI Study Pal</h1>
                 <p className="text-xl text-slate-600 mt-2">Your AI-powered learning companion</p>
             </div>
             
