@@ -1,5 +1,7 @@
 {
   "name": "Study Pal: AI PDF Tutor",
   "description": "An AI-powered learning assistant that helps you understand PDF documents. Upload a file to get a quick summary and ask questions to your personal AI tutor.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "microphone"
+  ]
 }

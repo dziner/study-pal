@@ -19,7 +19,9 @@ export interface ModelInfo {
 export interface DocumentData {
   id: string;
   file: File;
+  fileType: 'pdf' | 'image';
   pdfDoc?: any; // pdf.js document object
+  imageUrl?: string; // for images
   summary: string;
   chat: Chat | null;
   chatHistory: ChatMessage[];
@@ -27,4 +29,22 @@ export interface DocumentData {
   processingState: DocumentProcessingState;
   errorMessage?: string;
   model: Model;
+}
+
+export interface QuizQuestion {
+  questionText: string;
+  options: string[];
+  correctAnswerIndex: number;
+  explanation: string;
+}
+
+export interface QuizData {
+  title: string;
+  questions: QuizQuestion[];
+}
+
+export interface UserAnswer {
+  questionIndex: number;
+  selectedOptionIndex: number;
+  isCorrect: boolean;
 }

@@ -69,14 +69,14 @@ export const IdleStateView: React.FC<IdleStateViewProps> = ({ onFileSelected }) 
                     <div className={`p-4 rounded-full transition-colors ${isDragging ? 'bg-blue-100' : 'bg-slate-100'}`}>
                         <UploadIcon className="h-12 w-12 text-slate-500"/>
                     </div>
-                    <p className="mt-4 text-xl font-semibold text-slate-700">Drop your PDF here or click to upload</p>
+                    <p className="mt-4 text-xl font-semibold text-slate-700">Drop your PDF or Image here</p>
                     <p className="text-sm text-slate-500 mt-1">Upload any study material and start learning with AI</p>
                 </div>
                 <input
                     ref={inputRef}
                     type="file"
                     className="hidden"
-                    accept=".pdf"
+                    accept=".pdf,image/*"
                     onChange={handleFileChange}
                 />
             </div>
@@ -85,6 +85,9 @@ export const IdleStateView: React.FC<IdleStateViewProps> = ({ onFileSelected }) 
                 Study Pal will analyze your document and help you understand it
                 <br />
                 through interactive Q&A
+            </p>
+            <p style={{ fontFamily: "'Mynerve', cursive" }} className="text-slate-500 text-base text-center mt-12">
+                Powered by your daddy.
             </p>
         </div>
     );

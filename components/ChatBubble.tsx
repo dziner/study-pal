@@ -1,34 +1,35 @@
 import React from 'react';
+import type { ChatMessage } from '../types';
 import { MarkdownRenderer } from './MarkdownRenderer';
+import { LogoIcon } from './icons';
+import { Spinner } from './Spinner';
 
-interface ChatBubbleProps {
-    sender: 'user' | 'bot';
-    text: string;
-    isTyping?: boolean;
-}
-
-export const ChatBubble: React.FC<ChatBubbleProps> = ({ sender, text, isTyping }) => {
-    const isBot = sender === 'bot';
-
-    const bubbleClasses = isBot
-        ? 'bg-slate-200 text-slate-800'
-        : 'bg-blue-600 text-white';
-
-    const containerClasses = `flex gap-2 ${isBot ? 'justify-start' : 'justify-end'}`;
-    
-    const showTyping = isBot && isTyping;
+export const ChatBubble: React.FC<{ message: ChatMessage }> = ({ message }) => {
+    const isUser = message.sender === 'user';
+    const isBotTyping = message.sender === 'bot' && message.text === '...';
+    const isCraftingQuiz = message.sender === 'bot' && message.text === "Crafting your quiz... 🧠✨";
 
     return (
-        <div className={containerClasses}>
-            <div className={`max-w-md md:max-w-lg rounded-2xl p-3 shadow-sm ${bubbleClasses}`}>
-                {showTyping ? (
-                    <div className="flex items-center justify-center space-x-1">
-                        <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-                        <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-                        <span className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span>
+        <div className={`flex items-start gap-3 w-full ${isUser ? 'justify-end' : 'justify-start'}`}>
+            {!isUser && (
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center">
+                    <LogoIcon />
+                </div>
+            )}
+            <div className={`max-w-xl rounded-2xl px-4 py-3 ${isUser ? 'bg-blue-500 text-white rounded-br-lg' : 'bg-white text-slate-800 rounded-bl-lg shadow-sm border border-slate-100'}`}>
+                {isBotTyping ? (
+                    <div className="flex items-center space-x-1 py-1">
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                        <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+                    </div>
+                ) : isCraftingQuiz ? (
+                    <div className="flex items-center space-x-3 py-1">
+                        <Spinner />
+                        <span className="text-slate-600 font-medium">Crafting your quiz...</span>
                     </div>
                 ) : (
-                    isBot ? <MarkdownRenderer content={text} /> : <p className="whitespace-pre-wrap">{text}</p>
+                    isUser ? <p className="whitespace-pre-wrap">{message.text}</p> : <MarkdownRenderer content={message.text} />
                 )}
             </div>
         </div>
