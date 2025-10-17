@@ -36,8 +36,6 @@ export const renderInline = (text: string): React.ReactNode => {
 };
 
 const getIndentation = (line: string) => line.match(/^\s*/)?.[0].length ?? 0;
-// FIX: Use 'as const' on the 'type' property to ensure TypeScript infers a literal type ('ul' | 'ol')
-// instead of a generic 'string'. This allows the 'type' to be used as a valid JSX tag name (<ListTag>).
 const getListItem = (line: string) => {
     const trimmed = line.trim();
     if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
@@ -122,8 +120,6 @@ export const MarkdownRenderer: React.FC<{ content: string }> = ({ content }) => 
                             // Attach nested list to the last item
                             const lastItem = listItems[listItems.length-1];
                             if (React.isValidElement(lastItem)) {
-                                // FIX: The type of `lastItem.props` is inferred as `unknown` under strict type checking.
-                                // Casting it to a known shape with an optional `children` property allows safe access.
                                 const newChildren = [...React.Children.toArray((lastItem.props as { children?: React.ReactNode }).children), nestedList];
                                 listItems[listItems.length - 1] = React.cloneElement(lastItem, lastItem.props, ...newChildren);
                             }

@@ -52,7 +52,7 @@ export const IdleStateView: React.FC<IdleStateViewProps> = ({ onFileSelected }) 
             onDragLeave={handleDragLeave}
         >
             <img 
-                src="https://lh3.googleusercontent.com/d/1KqAh1lb2nSxlX13E1pJ4ME23MmnWUTWX" 
+                src="https://lh3.googleusercontent.com/d/1KqAh1lb2nSxlX13E1pJ4ME23MmnWUTWX"
                 alt="Kangmul and Joan" 
                 className="w-32 h-32 rounded-full object-cover mb-6 shadow-lg border-4 border-white"
             />
@@ -87,7 +87,7 @@ export const IdleStateView: React.FC<IdleStateViewProps> = ({ onFileSelected }) 
                 through interactive Q&A
             </p>
             <p style={{ fontFamily: "'Mynerve', cursive" }} className="text-slate-500 text-base text-center mt-12">
-                Powered by your daddy.
+                Crafted by your dad with love.
             </p>
         </div>
     );

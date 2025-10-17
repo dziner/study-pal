@@ -1,11 +1,76 @@
 import React, { useState } from 'react';
-import type { QuizData, UserAnswer } from '../types';
+import { QuizData, UserAnswer } from '../types';
+
+// FIX: Corrected the TypeScript definition for the 'lottie-player' custom element
+// to resolve the 'Property does not exist on type JSX.IntrinsicElements' error.
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'lottie-player': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & {
+        src?: string;
+        background?: string;
+        speed?: number;
+        loop?: boolean;
+        autoplay?: boolean;
+      }, HTMLElement>;
+    }
+  }
+}
+
+interface QuizResultsProps {
+    userAnswers: UserAnswer[];
+    data: QuizData;
+    onRestart: () => void;
+    onCreateAnotherQuiz: () => void;
+}
+
+const QuizResults: React.FC<QuizResultsProps> = ({ userAnswers, data, onRestart, onCreateAnotherQuiz }) => {
+    const score = userAnswers.filter(a => a.isCorrect).length;
+    const total = data.questions.length;
+    const percentage = Math.round((score / total) * 100);
+    const isPerfectScore = score === total;
+
+    return (
+        <div className="relative text-slate-800 p-2 text-center">
+            {isPerfectScore && (
+                <div className="absolute inset-0 z-10 pointer-events-none flex justify-center items-center">
+                    <div className="w-full h-full" style={{ transform: 'scale(1.5)' }}>
+                        <lottie-player
+                            src="/components/Confetti.json"
+                            background="transparent"
+                            speed={1}
+                            autoplay
+                        />
+                    </div>
+                </div>
+            )}
+            <h3 className="font-bold text-lg mb-2">📝 Quiz Results</h3>
+            <p className="font-semibold text-xl mb-4">You scored {score} out of {total} ({percentage}%)</p>
+            <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                    onClick={onRestart}
+                    className="w-full text-center px-4 py-2 bg-slate-200 text-slate-800 rounded-lg font-semibold hover:bg-slate-300 transition-colors"
+                >
+                    Try Again
+                </button>
+                <button
+                    onClick={onCreateAnotherQuiz}
+                    className="w-full text-center px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors"
+                >
+                    Create Another Quiz
+                </button>
+            </div>
+        </div>
+    );
+};
+
 
 interface QuizProps {
     data: QuizData;
+    onCreateAnotherQuiz: () => void;
 }
 
-export const Quiz: React.FC<QuizProps> = ({ data }) => {
+export const Quiz: React.FC<QuizProps> = ({ data, onCreateAnotherQuiz }) => {
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
@@ -47,20 +112,13 @@ export const Quiz: React.FC<QuizProps> = ({ data }) => {
     };
 
     if (showResults) {
-        const score = userAnswers.filter(a => a.isCorrect).length;
-        const total = data.questions.length;
-        const percentage = Math.round((score / total) * 100);
         return (
-            <div className="text-slate-800 p-2">
-                <h3 className="font-bold text-lg mb-2">Quiz Results! 🎉</h3>
-                <p className="font-semibold text-xl mb-4">You scored {score} out of {total} ({percentage}%)</p>
-                <button
-                    onClick={handleRestart}
-                    className="w-full text-center px-4 py-2 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors"
-                >
-                    Try Again
-                </button>
-            </div>
+            <QuizResults
+                userAnswers={userAnswers}
+                data={data}
+                onRestart={handleRestart}
+                onCreateAnotherQuiz={onCreateAnotherQuiz}
+            />
         );
     }
 
